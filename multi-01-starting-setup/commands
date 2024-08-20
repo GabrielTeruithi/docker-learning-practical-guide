@@ -1,0 +1,10 @@
+docker run --name mongodb --rm -d --network multi-start-setup -v data:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=secretpass mongo
+
+
+docker build -t multi-start-backend .
+
+docker run -d --rm --name multi-start-backend --network multi-start-setup -p 80:80 -v logs:/app/logs -v "/home/gabrielto/private/projects/docker/docker-kubernetes-practical-guide-2024/fontes/multi-01-starting-setup/backend:/app" -v /app/node_modules multi-start-backend
+
+docker build -t multi-start-frontend .
+
+docker run -d --rm --name multi-start-frontend --network multi-start-setup -p 3000:3000 -v logs-front:/app/logs -v "/home/gabrielto/private/projects/docker/docker-kubernetes-practical-guide-2024/fontes/multi-01-starting-setup/frontend/src:/app/src" multi-start-frontend
